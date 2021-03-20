@@ -35,6 +35,7 @@ const userController = {
             .catch(err => res.status(400).json(err));
     },
 
+
     // Update user
     updateUser({ params, body }, res) {
         User.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
@@ -52,7 +53,7 @@ const userController = {
             });
     },
 
-    // Delete Pizza
+    // Delete user
     deleteUser({ params }, res) {
         User.findOneAndDelete({ _id: params.id })
             .then(dbUserData => {
