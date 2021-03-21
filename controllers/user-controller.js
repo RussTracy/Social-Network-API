@@ -3,6 +3,10 @@ const { User } = require('../models');
 const userController = {
     getAllUsers(req, res) {
         User.find({})
+            .populate({ // Display all thought data for user with populate 
+                path: 'thoughts',
+                select: '-__v' // - specified field not displayed
+            })
             .select('-__v')
             .then(dbUserData => res.json(dbUserData))
             .catch(err => {
@@ -13,6 +17,10 @@ const userController = {
 
     getUserById({ params }, res) {
         User.findOne({ _id: params.id })
+            .populate({ // Display all thought data for user with populate 
+                path: 'thoughts',
+                select: '-__v'
+            })
             .select('-__v')
             .then(dbUserData => {
                 // If no user is found, send 404
@@ -34,7 +42,6 @@ const userController = {
             .then(dbUserData => res.json(dbUserData))
             .catch(err => res.status(400).json(err));
     },
-
 
     // Update user
     updateUser({ params, body }, res) {
@@ -64,7 +71,36 @@ const userController = {
                 res.json(dbUserData);
             })
             .catch(err => res.status(400).json(err));
-    }
+    },
+
+    // Add friend
+    addFriend({ params }, res) {
+        User.findOneAndUpdate(
+            { _id: params.userId },
+            { $push: { friends: params.friendId } },
+            { new: true, runValidators: true }
+        )
+            .then(dbUserData => {
+                if (!dbUserData) {
+                    res.status(404).json({ message: 'No user found with this id!' });
+                    return;
+                }
+                res.json(dbUserData);
+            })
+            .catch(err => res.json(err));
+    },
+
+    // remove friend
+    removeFriend({ params }, res) {
+        User.findOneAndUpdate(
+            { _id: params.userId },
+            { $pull: { friends: params.friendId } },
+            { new: true }
+        )
+            .then(dbUserData => res.json(dbUserData))
+            .catch(err => res.json(err));
+    },
+
 
 };
 
