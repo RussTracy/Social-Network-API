@@ -7,6 +7,8 @@ Clone the repositry from GitHub and open using Visual Studio Code.
 
 # Usage 
 
+[Demo Video](https://drive.google.com/file/d/11g2tNNAbLToGsb4QXYOtPX9Xn_07cao-/view?usp=sharing)
+
 ![alt text](./public/images/ScreenShot.jpg)
 
 # Credits
